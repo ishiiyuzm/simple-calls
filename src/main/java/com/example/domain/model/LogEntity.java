@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -27,8 +28,9 @@ public class LogEntity {
     
     // シーケンス番号
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer seq;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "seq")
+    private int seq;
 
     // Peer_Id
     @Column(name = "peer_id")
@@ -54,10 +56,10 @@ public class LogEntity {
     @Column(name = "update_date")
     private Timestamp update_date;
 
-    public Integer getSeq(){
+    public int getSeq(){
         return this.seq;
     }
-    public void setSeq(Integer seq) {
+    public void setSeq(int seq) {
         this.seq = seq;
     }
 
@@ -68,10 +70,10 @@ public class LogEntity {
         this.peer_id = peer_id;
     }
 
-    public String getToPeer_id(){
+    public String getTopeer_id(){
         return this.topeer_id;
     }
-    public void setToPeer_id(String topeer_id) {
+    public void setTopeer_id(String topeer_id) {
         this.topeer_id = topeer_id;
     }
 

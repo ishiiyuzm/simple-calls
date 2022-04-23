@@ -39,4 +39,14 @@ public class LogService {
         // Spring Data JPAで用意されているメソッド（API）を実行しています。
         return logRepository.findAll();
     }
+
+    /**
+     * 登録
+     */
+    public void insert(LogEntity logEntity) {
+
+      logRepository.save(logEntity);
+    
+    }
+
 }

@@ -4,31 +4,26 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- skywayAPI -->
-    <script src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
+    <script src="https://cdn.webrtc.ecl.ntt.com/skyway-4.4.4.js"></script>
     <meta charset="UTF-8">
-    <title>Calls</title>
+    <title>simple_calls</title>
 </head>
 <body>
-    <form method="post">
-        <video id="my-video" width="400px" autoplay muted playsinline></video>
-        <br>
-        <div style="_display:inline;">
-            MyPeerNo:
-            <div id="my-id">
-            </div>
-            <input id="their-id"></input>
-            <button id="make-call">発信</button>
-            <video id="their-video" width="400px" autoplay muted playsinline></video>
-        </div>
-    </form>
+    <video id="my-video" width="400px" autoplay muted playsinline></video>
+    <p id="my-id"></p>
+    <input id="their-id"></input>
+    <button id="make-call">発信</button>
+    <video id="their-video" width="400px" autoplay muted playsinline></video>
 </body>
 <script>
+    
     let localStream;
+
     // カメラ映像取得
     navigator.mediaDevices.getUserMedia({video: true, audio: true})
-    .then( stream => {
+        .then( stream => {
         // 成功時にvideo要素にカメラ映像をセットし、再生
-        const videoElm = document.getElementById('my-video')
+        const videoElm = document.getElementById('my-video');
         videoElm.srcObject = stream;
         videoElm.play();
         // 着信時に相手にカメラ映像を返せるように、グローバル変数に保存しておく
@@ -39,20 +34,23 @@
         return;
     });
 
+    //Peer作成
     const peer = new Peer({
-        key: '34bf33a0-6c1b-4e98-ac78-9d29b997c7a4',    // APIキー
+        key: '34bf33a0-6c1b-4e98-ac78-9d29b997c7a4',
         debug: 3
     });
 
-    // PeerID取得
+    //PeerID取得
     peer.on('open', () => {
         document.getElementById('my-id').textContent = peer.id;
     });
 
     // 発信処理
     document.getElementById('make-call').onclick = () => {
-        // ログに登録
-        //jsInsertLog();
+
+        // ログデーブルに書き込み
+        jsInsertLog();
+
         const theirID = document.getElementById('their-id').value;
         const mediaConnection = peer.call(theirID, localStream);
         setEventListener(mediaConnection);
@@ -68,23 +66,43 @@
         });
     }
 
-    // 着信処理
+    //着信処理
     peer.on('call', mediaConnection => {
         mediaConnection.answer(localStream);
         setEventListener(mediaConnection);
     });
 
-    // 発信ボタンがクリックされた場合
-    // ログに書き込み処理
-    function jsInsertLog() {
-        $.ajax(
-            'TestController/InsertLog',
-            {
-                type: 'POST',
-                data: {peerId : $('#my-id').val(), toPeerId : $('#their-id').val()},
-                dataType: 'json'
-            }
-        );
-    }
+    // errorイベント
+    peer.on('error', err => {
+        alert(err.message);
+    });
 
+    // closeイベント
+    peer.on('close', () => {
+        alert('通信が切断しました。');
+    });
+
+    // ログデーブルに書き込み
+    function jsInsertLog() {
+        
+        var model = {
+            peer_id : peer.id,
+            topeer_id : $('#their-id').val()
+        };
+
+        $.ajax({
+            url : '/InsertLog',
+            type : 'POST',
+            contentType : 'application/json',
+            data : JSON.stringify(model),
+            dataType: "json",
+            done : function() {
+                console.log("jsInsertLog()_success");
+            },
+            fail : function() {
+                console.log("jsInsertLog()_error");
+            }
+        });
+    }
+    
 </script>
