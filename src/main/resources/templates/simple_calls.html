@@ -48,9 +48,8 @@
     // 発信処理
     document.getElementById('make-call').onclick = () => {
 
-        // ログデーブルに書き込み
-        jsInsertLog();
-
+        // 接続開始ログを登録
+        jsConnectInsertLog();
         const theirID = document.getElementById('their-id').value;
         const mediaConnection = peer.call(theirID, localStream);
         setEventListener(mediaConnection);
@@ -79,11 +78,15 @@
 
     // closeイベント
     peer.on('close', () => {
+
+        // TODO:接続終了時間を更新する
+        // jsDisConnectUpdateLog();
+        
         alert('通信が切断しました。');
     });
 
-    // ログデーブルに書き込み
-    function jsInsertLog() {
+    // 接続開始ログを登録
+    function jsConnectInsertLog() {
         
         var model = {
             peer_id : peer.id,
@@ -91,7 +94,7 @@
         };
 
         $.ajax({
-            url : '/InsertLog',
+            url : '/ConnectInsertLog',
             type : 'POST',
             contentType : 'application/json',
             data : JSON.stringify(model),

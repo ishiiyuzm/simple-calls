@@ -26,32 +26,33 @@ public class SimpleCallsRestController {
         return "Maven Spring Boot";
     }
 
-    @PostMapping("/InsertLog")
+    /**
+     * 接続開始ログを登録
+     * @param logModel
+     * @return
+     */
+    @PostMapping("/ConnectInsertLog")
     @ResponseBody
-    public LogModel InsertLog(@RequestBody LogModel logModel) {
+    public LogModel connectInsertLog(@RequestBody LogModel logModel) {
         //コンソールにjsonの値を表示
         String peerId = logModel.getPeer_id();
         String toPeerId = logModel.getTopeer_id();
 
         if (peerId == null || peerId == "") {
-            peerId = "abcdefghi";
+            peerId = "peerId Is Empty";
         }
 
         if (toPeerId == null || toPeerId == "") {
-            toPeerId = "abcdefghi";
+            toPeerId = "TopeerId IsEmpty";
         }
 
         LogEntity logEntity = new LogEntity();
-
+        // 現在時刻を取得
         var sysDateTime = new Timestamp(System.currentTimeMillis());
 
-        logEntity.setSeq(1);
-        logEntity.setPeer_id(peerId);
-        logEntity.setTopeer_id(toPeerId);
-        logEntity.setCreate_id("SYSTEM");
-        logEntity.setCreate_date(sysDateTime);
-        logEntity.setUpdate_id("SYSTEM");
-        logEntity.setUpdate_date(sysDateTime);
+        logEntity.setPeer_id(peerId);                   // 自分PeerId
+        logEntity.setTopeer_id(toPeerId);               // 相手PeerId
+        logEntity.setConnect_datetime(sysDateTime);     // 接続開始時間
 
         try {
 
@@ -59,7 +60,7 @@ public class SimpleCallsRestController {
             logService.insert(logEntity);
         
         } catch (Exception e) {
-            //TODO: handle exception
+            
         }
 
         //オブジェクトを画面に返す(現在特に使用はしてない)

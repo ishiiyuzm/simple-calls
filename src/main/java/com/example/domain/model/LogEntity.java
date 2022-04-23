@@ -28,7 +28,8 @@ public class LogEntity {
     
     // シーケンス番号
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "tlog_seq_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seq")
     private int seq;
 
@@ -40,21 +41,13 @@ public class LogEntity {
     @Column(name = "topeer_id")
     private String topeer_id;
 
-    // 作成者
-    @Column(name = "create_id")
-    private String create_id;
+    // 接続日時
+    @Column(name = "connect_datetime")
+    private Timestamp connect_datetime;
 
-    // 作成日時
-    @Column(name = "create_date")
-    private Timestamp create_date;
-
-    // 更新者
-    @Column(name = "update_id")
-    private String update_id;
-
-    // 更新日時
-    @Column(name = "update_date")
-    private Timestamp update_date;
+    // 接続終了日時
+    @Column(name = "disconnect_datetime")
+    private Timestamp disconnect_datetime;
 
     public int getSeq(){
         return this.seq;
@@ -77,31 +70,17 @@ public class LogEntity {
         this.topeer_id = topeer_id;
     }
 
-    public String getCreate_id(){
-        return this.create_id;
+    public Timestamp getConnect_datetime(){
+        return this.connect_datetime;
     }
-    public void setCreate_id(String create_id) {
-        this.create_id = create_id;
-    }
-
-    public Timestamp getCreate_date(){
-        return this.create_date;
-    }
-    public void setCreate_date(Timestamp create_date){
-        this.create_date = create_date;
+    public void setConnect_datetime(Timestamp connect_datetime){
+        this.connect_datetime = connect_datetime;
     }
 
-    public String getUpdate_id(){
-        return this.update_id;
+    public Timestamp getDisConnect_datetime(){
+        return this.disconnect_datetime;
     }
-    public void setUpdate_id(String update_id) {
-        this.update_id = update_id;
-    }
-
-    public Timestamp getUpdate_date(){
-        return this.update_date;
-    }
-    public void setUpdate_date(Timestamp update_date){
-        this.update_date = update_date;
+    public void setDisconnect_datetime(Timestamp disconnect_datetime){
+        this.disconnect_datetime = disconnect_datetime;
     }
 }
