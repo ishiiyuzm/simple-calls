@@ -41,11 +41,19 @@ public class LogEntity {
     @Column(name = "topeer_id")
     private String topeer_id;
 
+    // 接続者ID
+    @Column(name = "connect_id")
+    private String connect_id;
+
     // 接続日時
     @Column(name = "connect_datetime")
     private Timestamp connect_datetime;
 
-    // 接続終了日時
+    // 切断者ID
+    @Column(name = "disconnect_id")
+    private String disconnect_id;
+
+    // 切断日時
     @Column(name = "disconnect_datetime")
     private Timestamp disconnect_datetime;
 
@@ -70,11 +78,25 @@ public class LogEntity {
         this.topeer_id = topeer_id;
     }
 
+    public String getConnect_id(){
+        return this.connect_id;
+    }
+    public void setConnect_id(String connect_id) {
+        this.connect_id = connect_id;
+    }
+
     public Timestamp getConnect_datetime(){
         return this.connect_datetime;
     }
     public void setConnect_datetime(Timestamp connect_datetime){
         this.connect_datetime = connect_datetime;
+    }
+
+    public String getDisconnect_id(){
+        return this.disconnect_id;
+    }
+    public void setDisconnect_id(String disconnect_id) {
+        this.disconnect_id = disconnect_id;
     }
 
     public Timestamp getDisConnect_datetime(){

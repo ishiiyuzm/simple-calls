@@ -52,6 +52,7 @@ public class SimpleCallsRestController {
 
         logEntity.setPeer_id(peerId);                   // 自分PeerId
         logEntity.setTopeer_id(toPeerId);               // 相手PeerId
+        logEntity.setConnect_id(peerId);                // 接続者ID
         logEntity.setConnect_datetime(sysDateTime);     // 接続開始時間
 
         try {
@@ -66,4 +67,47 @@ public class SimpleCallsRestController {
         //オブジェクトを画面に返す(現在特に使用はしてない)
         return logModel;
     }
+
+    /**
+     * 切断情報を更新
+     * @param logModel
+     * @return
+     */
+    @PostMapping("/DisConnectUpdateLog")
+    @ResponseBody
+    public LogModel dicConnectUpdateLog(@RequestBody LogModel logModel) {
+        //コンソールにjsonの値を表示
+        String peerId = logModel.getPeer_id();
+        String toPeerId = logModel.getTopeer_id();
+
+        if (peerId == null || peerId == "") {
+            peerId = "peerId Is Empty";
+        }
+
+        if (toPeerId == null || toPeerId == "") {
+            toPeerId = "TopeerId IsEmpty";
+        }
+
+        LogEntity logEntity = new LogEntity();
+        // 現在時刻を取得
+        var sysDateTime = new Timestamp(System.currentTimeMillis());
+
+        logEntity.setPeer_id(peerId);                   // 自分PeerId
+        logEntity.setTopeer_id(toPeerId);               // 相手PeerId
+        logEntity.setDisconnect_id(peerId);             // 切断者ID
+        logEntity.setDisconnect_datetime(sysDateTime);  // 切断日時
+
+        try {
+
+            // 切断情報を更新
+            //logService.insert(logEntity);
+        
+        } catch (Exception e) {
+            
+        }
+
+        //オブジェクトを画面に返す(現在特に使用はしてない)
+        return logModel;
+    }
+
 }

@@ -2,6 +2,7 @@ package com.example.domain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.domain.model.LogEntity;
 
@@ -13,5 +14,8 @@ import com.example.domain.model.LogEntity;
  * 
  * ※カスタムメソッドを実装したクラスのインターフェースを指定することで、カスタムメソッドを追加可能
  */
+@Transactional
 @Repository
-public interface LogRepository extends JpaRepository<LogEntity, Integer> {}
+public interface LogRepository extends JpaRepository<LogEntity, Integer> {
+    
+}

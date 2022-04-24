@@ -13,9 +13,19 @@
     <p id="my-id"></p>
     <input id="their-id"></input>
     <button id="make-call">発信</button>
+    <button id="disConnect">切断</button>
     <video id="their-video" width="400px" autoplay muted playsinline></video>
 </body>
 <script>
+
+    $(function(){
+    
+        $('#disConnect').on('click', function() {
+            // closeイベントを発火
+            peer.destroy();
+        });
+
+    });
     
     let localStream;
 
@@ -78,10 +88,7 @@
 
     // closeイベント
     peer.on('close', () => {
-
-        // TODO:接続終了時間を更新する
-        // jsDisConnectUpdateLog();
-        
+        jsDisConnectUpdateLog();
         alert('通信が切断しました。');
     });
 
@@ -104,6 +111,29 @@
             },
             fail : function() {
                 console.log("jsInsertLog()_error");
+            }
+        });
+    }
+
+    // 切断情報を更新
+    function jsDisConnectUpdateLog() {
+        
+        var model = {
+            peer_id : peer.id,
+            topeer_id : $('#their-id').val()
+        };
+
+        $.ajax({
+            url : '/DisConnectUpdateLog',
+            type : 'POST',
+            contentType : 'application/json',
+            data : JSON.stringify(model),
+            dataType: "json",
+            done : function() {
+                console.log("jsDisConnectUpdateLog()_success");
+            },
+            fail : function() {
+                console.log("jsDisConnectUpdateLog()_error");
             }
         });
     }
