@@ -1,8 +1,54 @@
 <!DOCTYPE html>
 <head>
+    <!-- skywayAPI -->
+    <script src="https://cdn.webrtc.ecl.ntt.com/skyway-4.4.4.js"></script>
     <meta charset="UTF-8">
-    <title>Maven Sample</title>
+    <title>simple_calls</title>
 </head>
 <body>
-    <span>Maven Spring Boot Hello World</span>
+    <video id="my-video" width="400px"></video>
+    <p id="my-id"></p>
+    <input id="their-id"></input>
+    <div id="make-call">
+        <input type="button" value="発信"  v-bind:disabled="disableFlag" />
+    </div>
+    <div id="disConnect">
+        <input type="button" value="切断" v-bind:disabled="disableFlag" />
+    </div>
+    <video id="their-video" width="400px"></video>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.29/dist/vue.global.js"></script>
 </body>
+<script>
+    /*
+    * Vueで実装
+    */
+
+    // 発信ボタン
+    Vue.createApp({
+        data:function() {
+            return {
+                disableFlag: false
+            };
+        },
+        methods: {
+            onclick: function(){
+                // TODO 発信イベント呼び出し
+            }
+        }
+    }).mount('#make-call');
+
+    // 切断ボタン
+    Vue.createApp({
+        data:function() {
+            return {
+                disableFlag: true
+            };
+        },
+        methods: {
+            onclick: function(){
+                // TODO 切断イベント呼び出し
+            }
+        }
+    }).mount('#disConnect');
+
+</script>
