@@ -80,14 +80,6 @@ public class SimpleCallsRestController {
         String peerId = logModel.getPeer_id();
         String toPeerId = logModel.getTopeer_id();
 
-        if (peerId == null || peerId == "") {
-            peerId = "peerId Is Empty";
-        }
-
-        if (toPeerId == null || toPeerId == "") {
-            toPeerId = "TopeerId IsEmpty";
-        }
-
         LogEntity logEntity = new LogEntity();
         // 現在時刻を取得
         var sysDateTime = new Timestamp(System.currentTimeMillis());
@@ -100,7 +92,7 @@ public class SimpleCallsRestController {
         try {
 
             // 切断情報を更新
-            //logService.insert(logEntity);
+            logService.updateDisConnect(logEntity);
         
         } catch (Exception e) {
             

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.domain.model.LogEntity;
 import com.example.domain.repository.LogRepository;
+import com.example.utils.StringUtil;
 
 /**
  * @Service：ビジネスロジックを提供するコンポーネントであることを宣言する。
@@ -16,6 +17,10 @@ import com.example.domain.repository.LogRepository;
 @Service
 public class LogService {
 
+    // コンストラクタ
+    LogService() {
+
+    }
     /**
      * コンテナに登録されているRepositoryコンポーネントをインジェクションしてます
      */
@@ -47,6 +52,32 @@ public class LogService {
 
       logRepository.save(logEntity);
     
+    }
+
+    /**
+     * 切断情報を更新
+     */
+    public void updateDisConnect(LogEntity logEntity) {
+
+      var peerId = logEntity.getPeer_id();
+      if (StringUtil.IsNullorEmpty(peerId)) {
+          return;
+      }
+      var toPeerId = logEntity.getTopeer_id();
+      if (StringUtil.IsNullorEmpty(toPeerId)) {
+          return;
+      }
+      var disconnect_id = logEntity.getDisconnect_id();
+      if (StringUtil.IsNullorEmpty(disconnect_id)) {
+          return;
+      }
+      var disconnect_datetime = logEntity.getDisConnect_datetime();
+      if (disconnect_datetime == null) {
+          return;
+      }
+
+      logRepository.updateDisConnectLog(peerId, toPeerId, disconnect_id, disconnect_datetime);
+      
     }
 
 }
