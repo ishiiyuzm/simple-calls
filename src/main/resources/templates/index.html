@@ -15,40 +15,10 @@
     <div id="disConnect">
         <input type="button" value="切断" v-bind:disabled="disableFlag" />
     </div>
+    <div id="nowDateTime">
+        <p>現在時刻：{{ current.toLocaleString() }}</p>
+    </div>
     <video id="their-video" width="400px"></video>
     <script src="https://cdn.jsdelivr.net/npm/vue@3.2.29/dist/vue.global.js"></script>
+    <script type="text/javascript" src="js/simple_calls.js"></script>
 </body>
-<script>
-    /*
-    * Vueで実装
-    */
-
-    // 発信ボタン
-    Vue.createApp({
-        data:function() {
-            return {
-                disableFlag: false
-            };
-        },
-        methods: {
-            onclick: function(){
-                // TODO 発信イベント呼び出し
-            }
-        }
-    }).mount('#make-call');
-
-    // 切断ボタン
-    Vue.createApp({
-        data:function() {
-            return {
-                disableFlag: true
-            };
-        },
-        methods: {
-            onclick: function(){
-                // TODO 切断イベント呼び出し
-            }
-        }
-    }).mount('#disConnect');
-
-</script>
