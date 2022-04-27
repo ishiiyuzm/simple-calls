@@ -2,31 +2,69 @@
     * Vueで実装
     */
 
+    // カメラ映像取得
+    navigator.mediaDevices.getUserMedia({video: true, audio: true})
+        .then( stream => {
+        // 成功時にvideo要素にカメラ映像をセットし、再生
+        const videoElm = document.getElementById('my-video');
+        videoElm.srcObject = stream;
+        videoElm.play();
+        // 着信時に相手にカメラ映像を返せるように、グローバル変数に保存しておく
+        localStream = stream;
+    }).catch( error => {
+        // 失敗時にはエラーログを出力
+        console.error('mediaDevice.getUserMedia() error:', error);
+        return;
+    });
+
+    //Peer作成
+    const peer = new Peer({
+        key: '34bf33a0-6c1b-4e98-ac78-9d29b997c7a4',
+        debug: 3
+    });
+
+    //PeerID取得
+    peer.on('open', () => {
+        document.getElementById('my-id').textContent = peer.id;
+    });
+
     // 発信ボタン
     Vue.createApp({
-        data:function() {
+        data() {
             return {
                 disableFlag: false
             };
         },
         methods: {
-            onclick: function(){
-                // TODO 発信イベント呼び出し
-            }
+            // 発信ボタンのクリック時
+            makeCallButtonOnClick() {
+                this.connectInsertLog();
+            },
+            // 接続開始ログを登録
+            connectInsertLog() {
+                console.log('connect');
+                // TODO ajaxで呼び出し
+            },
         }
     }).mount('#make-call');
 
     // 切断ボタン
     Vue.createApp({
-        data:function() {
+        data() {
             return {
                 disableFlag: true
             };
         },
         methods: {
-            onclick: function(){
-                // TODO 切断イベント呼び出し
-            }
+            // 切断ボタンのクリック時
+            disConnectButtonOnClick() {
+                this.disConnectUpdateLog();
+            },
+            // 切断情報を更新
+            disConnectUpdateLog() {
+                console.log('diconnect');
+                // TODO ajaxで呼び出し
+            },
         }
     }).mount('#disConnect');
 

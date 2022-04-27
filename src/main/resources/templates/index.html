@@ -10,10 +10,10 @@
     <p id="my-id"></p>
     <input id="their-id"></input>
     <div id="make-call">
-        <input type="button" value="発信"  v-bind:disabled="disableFlag" />
+        <input type="button" value="発信" v-on:click="makeCallButtonOnClick()" v-bind:disabled="disableFlag" />
     </div>
     <div id="disConnect">
-        <input type="button" value="切断" v-bind:disabled="disableFlag" />
+        <input type="button" value="切断" v-on:click="disConnectButtonOnClick()"  v-bind:disabled="disableFlag" />
     </div>
     <div id="nowDateTime">
         <p>現在時刻：{{ current.toLocaleString() }}</p>
