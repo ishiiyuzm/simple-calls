@@ -1,45 +1,31 @@
 <template>
   <div>
-    <div id="app">
-    </div>
+    <img alt="Vue logo" src="./assets/logo.png">
+    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <VidepInfo/>
   </div>
 </template>
 
 <script>
-  import Vue from 'vue'
-  const app = new Vue({
-      el: '#app',
-      data: function() {
-        return {
-          audios: [],
-          videos: []
-        };
-      },
-      methods: {
+import HelloWorld from './components/HelloWorld.vue'
+import VidepInfo from './components/VideoInfo.vue'
 
-      },
-      mounted: async function () {
-        //デバイスへのアクセス
-        const deviceInfos = await navigator.mediaDevices.enumerateDevices();
-        console.log(deviceInfos);
-
-        //1. オーディオデバイスの情報を取得
-        deviceInfos
-        .filter(deviceInfo => deviceInfo.kind === 'audioinput')
-        .map(audio => this.audios.push({text: audio.label || `Microphone ${this.audios.length + 1}`, value: audio.deviceId}));
-
-        //2. カメラの情報を取得
-        deviceInfos
-        .filter(deviceInfo => deviceInfo.kind === 'videoinput')
-        .map(video => this.videos.push({text: video.label || `Camera  ${this.videos.length - 1}`, value: video.deviceId}));
-
-        console.log(this.audios, this.videos); 
-      }
-  })
-
-  app.mount('#app');
+export default {
+  name: 'App',
+  components: {
+    HelloWorld,
+    VidepInfo
+  }
+}
 </script>
 
 <style>
-
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
 </style>
