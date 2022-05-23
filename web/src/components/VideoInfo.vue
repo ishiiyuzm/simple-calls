@@ -1,8 +1,13 @@
 <template>
-  <div class="videoInfo">
-    <video id="my-video" muted="true" width="450" autoplay playsinline></video>
-    <p>Your Peer ID: <span id="my-id">{{peerId}}</span></p>
-    <video id="their-video" width="450" autoplay playsinline></video>
+  <div class="container videoInfo">
+    <div class="row">
+      <div class="col-md-6">
+        <video id="my-video" muted="true" width="450" autoplay playsinline></video>
+      </div>
+      <div class="col-md-6">
+        <video id="their-video" width="450" autoplay playsinline></video>
+      </div>
+    </div>
     マイク:
     <select v-model="selectedAudio" @change="onChange">
       <option disabled value="">マイクを選択してください</option>
@@ -17,8 +22,9 @@
         {{ video.text }}
       </option>
     </select>
+    <p>Your Peer ID: <span id="my-id">{{peerId}}</span></p>
     <input v-model="topeerId" placeholder="相手のPeerId">
-    <button @click="makeCall" class="button--green">発信</button>
+    <button @click="makeCall" class="button--green btn btn-success">発信</button>
   </div>
 </template>
 
