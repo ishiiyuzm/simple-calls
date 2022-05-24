@@ -2,34 +2,43 @@
   <div class="container videoInfo">
     <div class="row">
       <div class="col-md-6">
-        <video id="my-video" muted="true" width="450" autoplay playsinline></video>
+        <video id="my-video" muted="true" width="500" autoplay playsinline></video>
       </div>
       <div class="col-md-6">
-        <video id="their-video" width="450" autoplay playsinline></video>
+        <video id="their-video" width="500" autoplay playsinline></video>
       </div>
     </div>
-    マイク:
-    <select v-model="selectedAudio" @change="onChange">
-      <option disabled value="">マイクを選択してください</option>
-      <option v-for="(audio, key, index) in audios" v-bind:key="index" :value="audio.value">
-        {{ audio.text }}
-      </option>
-    </select>
-    カメラ: 
-    <select v-model="selectedVideo" @change="onChange">
-      <option disabled value="">カメラを選択してください</option>
-      <option v-for="(video, key, index) in videos" v-bind:key="index" :value="video.value">
-        {{ video.text }}
-      </option>
-    </select>
-    <p>Your Peer ID: <span id="my-id">{{peerId}}</span></p>
+    <div class="row">
+      <div class="col-md-6">
+        マイク:
+        <select v-model="selectedAudio" @change="onChange">
+          <option disabled value="">マイクを選択してください</option>
+          <option v-for="(audio, key, index) in audios" v-bind:key="index" :value="audio.value">
+            {{ audio.text }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        カメラ: 
+        <select v-model="selectedVideo" @change="onChange">
+          <option disabled value="">カメラを選択してください</option>
+          <option v-for="(video, key, index) in videos" v-bind:key="index" :value="video.value">
+            {{ video.text }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <p>あなたの PeerID: <span id="my-id">{{peerId}}</span></p>
     <input v-model="topeerId" placeholder="相手のPeerId">
+    &nbsp;
     <button @click="makeCall" class="button--green btn btn-success">発信</button>
   </div>
 </template>
 
 <script>
   import Peer from 'skyway-js';
+  import axios from 'axios';
+
   export default {
     name: 'VidepInfo',
     data() {
@@ -37,7 +46,7 @@
         audios: [],
         videos: [],
         selectedAudio: '',
-        selectedVideo: '',
+        selectedVideo: '',  
         peerId: '',
         topeerId: '',
         localStream: {}
@@ -69,7 +78,7 @@
       .filter(deviceInfo => deviceInfo.kind === 'videoinput')
       .map(video => this.videos.push({text: video.label || `Camera  ${this.videos.length - 1}`, value: video.deviceId}));
 
-      console.log(this.audios, this.videos); 
+      //console.log(this.audios, this.videos); 
     },
     methods: {
       onChange: function (){
@@ -89,7 +98,10 @@
           this.localStream = stream;
       },
       makeCall: function(){
+        // 接続開始ログを登録
+        this.connectInsertLog();
         const call = this.peer.call(this.topeerId, this.localStream);
+        // 接続処理
         this.connect(call);
       },
       connect: function(call){
@@ -98,6 +110,21 @@
             el.srcObject = stream;
             el.play();
         });
+      },
+      connectInsertLog: function(){
+        const model = {
+            peer_id : this.peerId,
+            topeer_id : this.topeerId
+        };
+        axios
+          .post("api/ConnectInsertLog", JSON.stringify(model))
+          .then((res) => {
+            console.log(res);
+            this.posts = res.data.posts;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
   }
