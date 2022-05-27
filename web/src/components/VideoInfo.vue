@@ -2,36 +2,44 @@
   <div class="container videoInfo">
     <div class="row">
       <div class="col-md-6">
-        <video id="my-video" muted="true" width="500" autoplay playsinline></video>
+        <video id="my-video" muted="true" width="650" autoplay playsinline></video>
       </div>
       <div class="col-md-6">
-        <video id="their-video" width="500" autoplay playsinline></video>
+        <video id="their-video" width="650" autoplay playsinline></video>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6">
-        マイク:
-        <select v-model="selectedAudio" @change="onChange">
-          <option disabled value="">マイクを選択してください</option>
-          <option v-for="(audio, key, index) in audios" v-bind:key="index" :value="audio.value">
-            {{ audio.text }}
-          </option>
-        </select>
+      <div class="col-md-12">
+        <div style="text-align:left">
+          マイク:
+          <select v-model="selectedAudio" @change="onChange">
+            <option disabled value="">マイクを選択してください</option>
+            <option v-for="(audio, key, index) in audios" v-bind:key="index" :value="audio.value">
+              {{ audio.text }}
+            </option>
+          </select>
+        </div>
       </div>
-      <div class="col-md-6">
-        カメラ: 
-        <select v-model="selectedVideo" @change="onChange">
-          <option disabled value="">カメラを選択してください</option>
-          <option v-for="(video, key, index) in videos" v-bind:key="index" :value="video.value">
-            {{ video.text }}
-          </option>
-        </select>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div style="text-align:left">
+          カメラ: 
+          <select v-model="selectedVideo" @change="onChange">
+            <option disabled value="">カメラを選択してください</option>
+            <option v-for="(video, key, index) in videos" v-bind:key="index" :value="video.value">
+              {{ video.text }}
+            </option>
+          </select>
+        </div>
       </div>
     </div>
     <p>あなたの PeerID: <span id="my-id">{{peerId}}</span></p>
     <input v-model="topeerId" placeholder="相手のPeerId">
     &nbsp;
     <button @click="makeCall" class="button--green btn btn-success">発信</button>
+    &nbsp;
+    <button @click="disConnect" class="button--green btn btn-danger">切断</button>
   </div>
 </template>
 
@@ -39,9 +47,10 @@
   import Peer from 'skyway-js';
   import axios from 'axios';
 
+  // Cors対策で以下を有効化
   axios.defaults.baseURL = 'http://localhost:8080';
   axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
-  axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+  // axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
   export default {
     name: 'VidepInfo',
@@ -123,14 +132,39 @@
         };
 
         axios.post("/ConnectInsertLog", JSON.stringify(model))
-          .then(() => {
-            // console.log(res);
-            // this.posts = res.data.posts;
-            console.log('成功');
+          .then((res) => {
+             console.log(res);
+             this.posts = res.data.posts;
+            //console.log('成功');
           })
-          .catch(() => {
-            //console.log(err);
-            console.log('失敗');
+          .catch((err) => {
+            console.log(err);
+            //console.log('失敗');
+          });
+      },
+      disConnect: function() {
+        // 切断情報を更新
+        this.disConnectUpdateLog();
+        this.peer.on('close', () => {
+          alert('通信を切断しました。');
+        });
+      },
+      disConnectUpdateLog: function() {
+
+        const model = {
+            peer_id : this.peerId,
+            topeer_id : this.topeerId
+        };
+
+        axios.post("/DisConnectUpdateLog", JSON.stringify(model))
+          .then((res) => {
+             console.log(res);
+             this.posts = res.data.posts;
+            //console.log('成功');
+          })
+          .catch((err) => {
+            console.log(err);
+            //console.log('失敗');
           });
 
       }

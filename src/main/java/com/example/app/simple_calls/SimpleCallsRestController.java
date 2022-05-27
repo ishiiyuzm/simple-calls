@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,6 +33,7 @@ public class SimpleCallsRestController {
      */
     @PostMapping("/ConnectInsertLog")
     @ResponseBody
+    @CrossOrigin
     public LogModel connectInsertLog(@RequestBody LogModel logModel) {
         //コンソールにjsonの値を表示
         String peerId = logModel.getPeer_id();
@@ -75,6 +76,7 @@ public class SimpleCallsRestController {
      */
     @PostMapping("/DisConnectUpdateLog")
     @ResponseBody
+    @CrossOrigin
     public LogModel dicConnectUpdateLog(@RequestBody LogModel logModel) {
         //コンソールにjsonの値を表示
         String peerId = logModel.getPeer_id();
