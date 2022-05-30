@@ -8,31 +8,23 @@
         <video id="their-video" width="650" autoplay playsinline></video>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div style="text-align:left">
-          マイク:
-          <select v-model="selectedAudio" @change="onChange">
-            <option disabled value="">マイクを選択してください</option>
-            <option v-for="(audio, key, index) in audios" v-bind:key="index" :value="audio.value">
-              {{ audio.text }}
-            </option>
-          </select>
-        </div>
-      </div>
+    <div style="text-align:left">
+      マイク:
+      <select v-model="selectedAudio" @change="onChange">
+        <option disabled value="">マイクを選択してください</option>
+        <option v-for="(audio, key, index) in audios" v-bind:key="index" :value="audio.value">
+          {{ audio.text }}
+        </option>
+      </select>
     </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div style="text-align:left">
-          カメラ: 
-          <select v-model="selectedVideo" @change="onChange">
-            <option disabled value="">カメラを選択してください</option>
-            <option v-for="(video, key, index) in videos" v-bind:key="index" :value="video.value">
-              {{ video.text }}
-            </option>
-          </select>
-        </div>
-      </div>
+    <div style="text-align:left">
+      カメラ: 
+      <select v-model="selectedVideo" @change="onChange">
+        <option disabled value="">カメラを選択してください</option>
+        <option v-for="(video, key, index) in videos" v-bind:key="index" :value="video.value">
+          {{ video.text }}
+        </option>
+      </select>
     </div>
     <p>あなたの PeerID: <span id="my-id">{{peerId}}</span></p>
     <input v-model="topeerId" placeholder="相手のPeerId">
