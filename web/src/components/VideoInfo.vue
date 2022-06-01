@@ -92,11 +92,11 @@
           .then((res) => {
              console.log(res);
              this.posts = res.data.posts;
-            //console.log('成功');
+             console.log('成功');
           })
           .catch((err) => {
             console.log(err);
-            //console.log('失敗');
+            console.log('失敗');
           });
       },
       disConnect: function() {
