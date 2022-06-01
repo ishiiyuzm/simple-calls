@@ -22,7 +22,10 @@
   import axios from 'axios';
 
   // Cors対策で以下を有効化
-  axios.defaults.baseURL = 'http://localhost:8080';
+  // 開発用
+  //axios.defaults.baseURL = 'http://localhost:8080';
+  // 本番用 
+  axios.defaults.baseURL = 'https://www.simplecalls.ml';
   axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
   // axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
