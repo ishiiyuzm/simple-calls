@@ -6,4 +6,5 @@
   ・Azure Static Web Appsにデプロイ<br>
   　・[https://www.simplecalls.ml](https://www.simplecalls.ml)
 ## API<br>
-  ・Java18(SpringBoot)
+  ・Java18(SpringBoot)<br>
+  ・公開してないからいまのところローカルでだけしか動かせないよ
