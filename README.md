@@ -3,5 +3,5 @@
 
 ## 画面側<br>
   ・Vue 3.233<br>
-## 裏っかわ(API)<br>
-  ・Java(SpringBoot)
+## API<br>
+  ・Java18(SpringBoot)
