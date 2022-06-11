@@ -3,5 +3,7 @@
 
 ## 画面側<br>
   ・Vue 3.233<br>
+  ・Azure Static Web Appsにデプロイ<br>
+  　・[https://www.simplecalls.ml](https://www.simplecalls.ml)
 ## API<br>
   ・Java18(SpringBoot)
