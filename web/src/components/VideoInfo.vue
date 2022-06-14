@@ -1,10 +1,10 @@
 <template>
   <div class="container videoInfo">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-6" style="margin-top:5%">
         <video id="my-video" muted="true" width="650" autoplay playsinline></video>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6" style="margin-top:5%">
         <video id="their-video" width="650" autoplay playsinline></video>
       </div>
     </div>
