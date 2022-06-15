@@ -2,19 +2,22 @@
   <div>
     <HeaderInfo/>
     <VidepInfo/>
+    <FooterInfo/>
   </div>
 </template>
 
 <script>
 import HeaderInfo from './components/HeaderInfo.vue';
 import VidepInfo from './components/VideoInfo.vue'
+import FooterInfo from './components/FooterInfo.vue';
 
 export default {
   name: 'App',
   components: {
     VidepInfo,
     HeaderInfo,
-  }
+    FooterInfo,
+}
 }
 </script>
 

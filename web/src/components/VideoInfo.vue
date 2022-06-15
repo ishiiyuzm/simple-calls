@@ -2,6 +2,7 @@
   <div class="container videoInfo">
     <div class="row">
       <div class="col-md-6" style="margin-top:5%">
+        <!-- mutedはハウリング防止の為、設定-->
         <video id="my-video" muted="true" width="650" autoplay playsinline></video>
       </div>
       <div class="col-md-6" style="margin-top:5%">
