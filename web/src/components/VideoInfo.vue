@@ -42,13 +42,12 @@
       }
     },
     mounted: async function () {
-
       // APIKey
       const APIKEY = '34bf33a0-6c1b-4e98-ac78-9d29b997c7a4';
-      
-      this.peer = new Peer({key: APIKEY, debug: 3}); //新規にPeerオブジェクトの作成
-      this.peer.on('open', () => this.peerId = this.peer.id); //PeerIDを反映
-
+      // 新規にPeerオブジェクトの作成
+      this.peer = new Peer({key: APIKEY, debug: 3});
+      // PeerIDを反映 
+      this.peer.on('open', () => this.peerId = this.peer.id);
       this.peer.on('call', call => {
           call.answer(this.localStream);
           this.connect(call);
@@ -68,8 +67,10 @@
           console.error('mediaDevice.getUserMedia() error:', error);
           return;
       });
+
     },
     methods: {
+      // 発信ボタン押下後処理
       makeCall: function(){
         // 接続開始ログを登録
         this.connectInsertLog();
@@ -77,19 +78,22 @@
         // 接続処理
         this.connect(call);
       },
+      // 接続処理
       connect: function(call){
         call.on('stream', stream => {
             const el = document.getElementById('their-video');
+            // 相手の映像を設定
             el.srcObject = stream;
             el.play();
         });
       },
+      // ログ書き込み(登録処理)
       connectInsertLog: function(){
         const model = {
             peer_id : this.peerId,
             topeer_id : this.topeerId
         };
-
+        // API呼び出し
         axios.post("/ConnectInsertLog", JSON.stringify(model))
           .then((res) => {
              console.log(res);
@@ -101,21 +105,21 @@
             console.log('失敗');
           });
       },
+      // 切断ボタン押下後処理
       disConnect: function() {
-        // 切断情報を更新
         this.disConnectUpdateLog();
         this.peer.destroy();
         this.peer.on('close', () => {
           alert('通信を切断しました。');
         });
       },
+      // ログ書き込み(切断処理)
       disConnectUpdateLog: function() {
-
         const model = {
             peer_id : this.peerId,
             topeer_id : this.topeerId
         };
-
+        // API呼び出し
         axios.post("/DisConnectUpdateLog", JSON.stringify(model))
           .then((res) => {
              console.log(res);
@@ -127,6 +131,7 @@
             //console.log('失敗');
           });
       },
+      // 画面共有ボタン押下後処理
       screenShare: function() {
         // 画面共有
         var mediaStreamConstraints = { video: true };
@@ -135,7 +140,10 @@
           .then(stream => {
             localVideo.srcObject = stream;
             localVideo.play();
-          }).catch(console.log('えらーだお'));
+          })
+          .catch(
+            console.log('えらーだお')
+          );
       }
     }
   }
