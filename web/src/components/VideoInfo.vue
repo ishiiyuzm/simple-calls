@@ -15,6 +15,8 @@
     <button @click="makeCall" class="button--green btn btn-success">発信</button>
     &nbsp;
     <button @click="disConnect" class="button--green btn btn-danger">切断</button>
+    &nbsp;
+    <button @click="screenShare" class="button--green btn btn-primary">画面共有</button>
   </div>
 </template>
 
@@ -83,7 +85,6 @@
         });
       },
       connectInsertLog: function(){
-
         const model = {
             peer_id : this.peerId,
             topeer_id : this.topeerId
@@ -103,6 +104,7 @@
       disConnect: function() {
         // 切断情報を更新
         this.disConnectUpdateLog();
+        this.peer.destroy();
         this.peer.on('close', () => {
           alert('通信を切断しました。');
         });
@@ -124,7 +126,16 @@
             console.log(err);
             //console.log('失敗');
           });
-
+      },
+      screenShare: function() {
+        // 画面共有
+        var mediaStreamConstraints = { video: true };
+        var localVideo = document.getElementById("my-video");
+        navigator.mediaDevices.getDisplayMedia(mediaStreamConstraints)
+          .then(stream => {
+            localVideo.srcObject = stream;
+            localVideo.play();
+          }).catch(console.log('えらーだお'));
       }
     }
   }
