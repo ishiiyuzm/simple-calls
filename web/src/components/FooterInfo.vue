@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer mt-auto py-3 bg-light">
+  <footer class="footer mt-auto py-3 bg-white">
     <span class="text-muted text-dark">SimpleCall</span>
   </footer>
 </template>

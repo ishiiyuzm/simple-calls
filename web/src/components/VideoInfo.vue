@@ -12,11 +12,11 @@
     <p>あなたの PeerID: <span id="my-id">{{peerId}}</span></p>
     <input v-model="topeerId" placeholder="相手のPeerId">
     &nbsp;
-    <button @click="makeCall" class="button--green btn btn-success">発信</button>
+    <button v-bind:disabled="isCallButtonDisabled" @click="makeCall" class="btn   btn-success">発信</button>
     &nbsp;
-    <button @click="disConnect" class="button--green btn btn-danger">切断</button>
+    <button v-bind:disabled="isDisconnectButtonDisabled" @click="disConnect" class="btn btn-danger">切断</button>
     &nbsp;
-    <button @click="screenShare" class="button--green btn btn-primary">画面共有</button>
+    <button v-bind:disabled="isScreenShareButtonDisabled" @click="screenShare" class="btn btn-primary">画面共有</button>
   </div>
 </template>
 
@@ -38,6 +38,9 @@
       return{
         peerId: '',
         topeerId: '',
+        isCallButtonDisabled: false,        // 発信ボタン無効フラグ
+        isDisconnectButtonDisabled: true,   // 切断ボタン無効フラグ
+        isScreenShareButtonDisabled: true,  // 画面共有ボタン無効フラグ
         localStream: {}
       }
     },
@@ -77,6 +80,12 @@
         const call = this.peer.call(this.topeerId, this.localStream);
         // 接続処理
         this.connect(call);
+        // 発信ボタン無効フラグをtrueへ更新
+        this.isCallButtonDisabled = true;
+        // 切断ボタン無効フラグをfalseへ更新
+        this.isDisconnectButtonDisabled = false;
+        // 画面共有ボタン無効フラグをfalseへ更新
+        this.isScreenShareButtonDisabled = false;
       },
       // 接続処理
       connect: function(call){
@@ -112,6 +121,12 @@
         this.peer.on('close', () => {
           alert('通信を切断しました。');
         });
+        // 発信ボタン無効フラグをfalseへ更新
+        this.isCallButtonDisabled = false;
+        // 切断ボタン無効フラグをtrueへ更新
+        this.isDisconnectButtonDisabled = true;
+        // 画面共有ボタン無効フラグをtrueへ更新
+        this.isScreenShareButtonDisabled = true;
       },
       // ログ書き込み(切断処理)
       disConnectUpdateLog: function() {
@@ -139,7 +154,12 @@
         navigator.mediaDevices.getDisplayMedia(mediaStreamConstraints)
           .then(stream => {
             localVideo.srcObject = stream;
-            localVideo.play();
+            // 再度、相手に渡す為にstreamを格納
+            this.localStream = stream;
+            // 再度、接続する為に設定
+            this.call = this.peer.call(this.topeerId, this.localStream);
+            // 再度、接続処理
+            this.connect(this.call);
           })
           .catch(
             console.log('えらーだお')
