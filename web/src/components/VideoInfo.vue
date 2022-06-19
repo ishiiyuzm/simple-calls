@@ -9,7 +9,11 @@
         <video id="their-video" width="650" autoplay playsinline></video>
       </div>
     </div>
-    <p>あなたの PeerID: <span id="my-id">{{peerId}}</span></p>
+    <p>あなたの PeerID: 
+      <span id="my-id" style="font-size: 10pt; font-style:italic">{{peerId}}</span>
+      &nbsp;
+      <button @click="copyToClipboard(peerId)" class="btn btn-light">コピー</button>
+    </p>
     <input v-model="topeerId" placeholder="相手のPeerId">
     &nbsp;
     <button v-bind:disabled="isCallButtonDisabled" @click="makeCall" class="btn btn-success">発信</button>
@@ -78,6 +82,16 @@
 
     },
     methods: {
+      // PeerIdをコピー
+      copyToClipboard(text) {
+          navigator.clipboard.writeText(text)
+          .then(() => {
+              alert('コピーしたお。\n通話したい相手にコピーしたPeerIdを渡してね。');
+          })
+          .catch(e => {
+              console.error(e)
+          })
+      },
       // 発信ボタン押下後処理
       makeCall: function(){
         // 接続開始ログを登録
