@@ -85,12 +85,6 @@
         const call = this.peer.call(this.topeerId, this.localStream);
         // 接続処理
         this.connect(call);
-        // 発信ボタン無効フラグをtrueへ更新
-        this.isCallButtonDisabled = true;
-        // 切断ボタン無効フラグをfalseへ更新
-        this.isDisconnectButtonDisabled = false;
-        // 画面共有ボタン無効フラグをfalseへ更新
-        this.isScreenShareButtonDisabled = false;
       },
       // 接続処理
       connect: function(call){
@@ -99,6 +93,13 @@
             // 相手の映像を設定
             theirVideoElm.srcObject = stream;
             theirVideoElm.play();
+
+            // 発信ボタン無効フラグをtrueへ更新
+            this.isCallButtonDisabled = true;
+            // 切断ボタン無効フラグをfalseへ更新
+            this.isDisconnectButtonDisabled = false;
+            // 画面共有ボタン無効フラグをfalseへ更新
+            this.isScreenShareButtonDisabled = false;
         });
       },
       // ログ書き込み(登録処理)
