@@ -12,11 +12,11 @@
     <p>あなたの PeerID: <span id="my-id">{{peerId}}</span></p>
     <input v-model="topeerId" placeholder="相手のPeerId">
     &nbsp;
-    <button v-bind:disabled="isCallButtonDisabled" @click="makeCall" class="btn   btn-success">発信</button>
+    <button v-bind:disabled="isCallButtonDisabled" @click="makeCall" class="btn btn-success">発信</button>
     &nbsp;
     <button v-bind:disabled="isDisconnectButtonDisabled" @click="disConnect" class="btn btn-danger">切断</button>
     &nbsp;
-    <button v-bind:disabled="isScreenShareButtonDisabled" @click="screenShare" class="btn btn-primary">画面共有</button>
+    <button v-bind:disabled="isScreenShareButtonDisabled" @click="screenShare" class="btn btn-primary">画面共有{{screenShareSwitch}}</button>
   </div>
 </template>
 
@@ -41,6 +41,7 @@
         isCallButtonDisabled: false,        // 発信ボタン無効フラグ
         isDisconnectButtonDisabled: true,   // 切断ボタン無効フラグ
         isScreenShareButtonDisabled: true,  // 画面共有ボタン無効フラグ
+        screenShareSwitch: ' ON',
         localStream: {}
       }
     },
@@ -60,11 +61,15 @@
       navigator.mediaDevices.getUserMedia({video: true, audio: true})
           .then( stream => {
           // 成功時にvideo要素にカメラ映像をセットし、再生
-          const videoElm = document.getElementById('my-video');
-          videoElm.srcObject = stream;
-          videoElm.play();
+          const myVideoElm = document.getElementById('my-video');
+          myVideoElm.srcObject = stream;
+          myVideoElm.play();
           // 着信時に相手にカメラ映像を返せるように、グローバル変数に保存しておく
           this.localStream = stream;
+
+          const theirVideoElm = document.getElementById('their-video');
+          theirVideoElm.play();
+
       }).catch( error => {
           // 失敗時にはエラーログを出力
           console.error('mediaDevice.getUserMedia() error:', error);
@@ -90,10 +95,10 @@
       // 接続処理
       connect: function(call){
         call.on('stream', stream => {
-            const el = document.getElementById('their-video');
+            const theirVideoElm = document.getElementById('their-video');
             // 相手の映像を設定
-            el.srcObject = stream;
-            el.play();
+            theirVideoElm.srcObject = stream;
+            theirVideoElm.play();
         });
       },
       // ログ書き込み(登録処理)
@@ -103,7 +108,7 @@
             topeer_id : this.topeerId
         };
         // API呼び出し
-        axios.post("/ConnectInsertLog", JSON.stringify(model))
+        axios.post('/ConnectInsertLog', JSON.stringify(model))
           .then((res) => {
              console.log(res);
              this.posts = res.data.posts;
@@ -135,7 +140,7 @@
             topeer_id : this.topeerId
         };
         // API呼び出し
-        axios.post("/DisConnectUpdateLog", JSON.stringify(model))
+        axios.post('/DisConnectUpdateLog', JSON.stringify(model))
           .then((res) => {
              console.log(res);
              this.posts = res.data.posts;
@@ -148,22 +153,49 @@
       },
       // 画面共有ボタン押下後処理
       screenShare: function() {
-        // 画面共有
-        var mediaStreamConstraints = { video: true };
-        var localVideo = document.getElementById("my-video");
-        navigator.mediaDevices.getDisplayMedia(mediaStreamConstraints)
-          .then(stream => {
-            localVideo.srcObject = stream;
-            // 再度、相手に渡す為にstreamを格納
-            this.localStream = stream;
-            // 再度、接続する為に設定
-            this.call = this.peer.call(this.topeerId, this.localStream);
-            // 再度、接続処理
-            this.connect(this.call);
-          })
-          .catch(
+        var screenShareSwitch = this.screenShareSwitch;
+        var localVideo = document.getElementById('my-video');
+        var procMode = '0'; // 「0:ON処理、1:OFF処理」
+        if (screenShareSwitch.includes('ON', 1)) {
+          this.screenShareSwitch = ' OFF';
+        } else {
+          this.screenShareSwitch = ' ON';
+          procMode = '1';
+        }
+
+        // ON処理
+        if ('0' == procMode) {
+          // 画面共有
+          var mediaStreamConstraints = { video: true };
+          navigator.mediaDevices.getDisplayMedia(mediaStreamConstraints)
+            .then(stream => {
+              localVideo.srcObject = stream;
+              // 再度、相手に渡す為にstreamを格納
+              this.localStream = stream;
+              // 再度、接続する為に設定
+              this.call = this.peer.call(this.topeerId, this.localStream);
+              // 再度、接続処理
+              this.connect(this.call);
+            })
+            .catch(
+              console.log('えらーだお')
+            );
+        } else if ('1' == procMode) {
+          // OFF処理
+          // カメラ映像取得
+          navigator.mediaDevices.getUserMedia({video: true, audio: true})
+              .then( stream => {
+              localVideo.srcObject = stream;
+              // 再度、相手に渡す為にstreamを格納
+              this.localStream = stream;
+              // 再度、接続する為に設定
+              this.call = this.peer.call(this.topeerId, this.localStream);
+              // 再度、接続処理
+              this.connect(this.call);
+          }).catch(
             console.log('えらーだお')
           );
+        }
       }
     }
   }
