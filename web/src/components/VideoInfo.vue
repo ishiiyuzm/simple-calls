@@ -9,11 +9,13 @@
         <video id="their-video" width="650" height="500" autoplay playsinline controls></video>
       </div>
     </div>
-    <p>あなたの PeerId: 
-      <span id="my-id" style="font-size: 10pt; font-style:italic">{{peerId}}</span>
-      &nbsp;
-      <button @click="copyToClipboard(peerId)" class="btn btn-light">コピー</button>
-    </p>
+    <div style="margin-top:1%">
+        <p>あなたの PeerId: 
+        <span id="my-id" style="font-size: 10pt; font-style:italic">{{peerId}}</span>
+        &nbsp;
+        <button @click="copyToClipboard(peerId)" class="btn btn-light">コピー</button>
+      </p>
+    </div>
     <input v-model="topeerId" placeholder="相手のPeerID">
     &nbsp;
     <button v-bind:disabled="isCallButtonDisabled" @click="makeCall" class="btn btn-success">発信</button>
