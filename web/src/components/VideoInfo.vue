@@ -3,18 +3,18 @@
     <div class="row">
       <div class="col-md-6" style="margin-top:5%">
         <!-- mutedはハウリング防止の為、設定-->
-        <video id="my-video" muted="true" width="650" autoplay playsinline></video>
+        <video id="my-video" muted="true" width="650" height="500" autoplay playsinline controls></video>
       </div>
       <div class="col-md-6" style="margin-top:5%">
-        <video id="their-video" width="650" autoplay playsinline></video>
+        <video id="their-video" width="650" height="500" autoplay playsinline controls></video>
       </div>
     </div>
-    <p>あなたの PeerID: 
+    <p>あなたの PeerId: 
       <span id="my-id" style="font-size: 10pt; font-style:italic">{{peerId}}</span>
       &nbsp;
       <button @click="copyToClipboard(peerId)" class="btn btn-light">コピー</button>
     </p>
-    <input v-model="topeerId" placeholder="相手のPeerId">
+    <input v-model="topeerId" placeholder="相手のPeerID">
     &nbsp;
     <button v-bind:disabled="isCallButtonDisabled" @click="makeCall" class="btn btn-success">発信</button>
     &nbsp;
@@ -86,7 +86,7 @@
       copyToClipboard(text) {
           navigator.clipboard.writeText(text)
           .then(() => {
-              alert('コピーしたお。\n通話したい相手にコピーしたPeerIdを渡してね。');
+              alert('コピーしたお。\n通話したい相手にコピーしたPeerIDを渡してね。');
           })
           .catch(e => {
               console.error(e)
