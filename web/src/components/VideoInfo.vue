@@ -10,7 +10,7 @@
       </div>
     </div>
     <div style="margin-top:1%">
-        <p>あなたの PeerId: 
+        <p>あなたの PeerID: 
         <span id="my-id" style="font-size: 10pt; font-style:italic">{{peerId}}</span>
         &nbsp;
         <button @click="copyToClipboard(peerId)" class="btn btn-light">コピー</button>
