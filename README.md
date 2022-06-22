@@ -7,7 +7,11 @@
 ## 画面側<br>
   ・Vue 3.233<br>
   ・Azure Static Web Appsにデプロイ<br>
-  　・[https://www.simplecalls.ml](https://www.simplecalls.ml)
+  　・https://www.simplecalls.ml
 ## API<br>
   ・Java18(SpringBoot)<br>
-  ・公開してないからいまのところローカルでだけしか動かせないよ
+  ・Apache Maven<br>
+  ・公開してないからいまのところローカルでだけしか動かせないよ<br>
+  ・構築参考サイト<br>
+  　・フォルダ構成以下を参考<br>
+   　　・https://www.memory-lovers.blog/entry/2016/05/08/154028
