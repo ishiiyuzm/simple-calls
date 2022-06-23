@@ -15,3 +15,5 @@
   ・構築参考サイト<br>
   　・フォルダ構成以下を参考<br>
    　　・https://www.memory-lovers.blog/entry/2016/05/08/154028
+## DB<br>
+　・PostgreSQL<br>
